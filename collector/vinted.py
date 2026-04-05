@@ -125,8 +125,17 @@ class VintedCollector(BaseCollector):
         if isinstance(vitem, dict):
             d = vitem
         else:
-            # VintedItem dataclass — access attributes directly
-            d = vitem.__dict__ if hasattr(vitem, "__dict__") else {}
+            # VintedItem dataclass — access attributes directly and convert to dict
+            d = {}
+            if hasattr(vitem, "__dict__"):
+                for key, val in vitem.__dict__.items():
+                    # Convert nested objects to dicts
+                    if hasattr(val, "__dict__"):
+                        d[key] = val.__dict__
+                    elif isinstance(val, list):
+                        d[key] = [v.__dict__ if hasattr(v, "__dict__") else v for v in val]
+                    else:
+                        d[key] = val
 
         # Extract image URL
         image_url: Optional[str] = None
@@ -154,6 +163,28 @@ class VintedCollector(BaseCollector):
         # Condition / status
         condition = d.get("status") or None
 
+        # Convert raw_data to be JSON serializable - exclude problematic fields
+        raw_data = {}
+        if isinstance(d, dict):
+            # List of fields that are safe to serialize
+            safe_fields = ['id', 'title', 'price', 'currency', 'size_title', 'status',
+                          'catalog_id', 'color1', 'description', 'url', 'listing_url',
+                          'user_id', 'country_id', 'city_id', 'is_favourite']
+
+            for key, val in d.items():
+                # Skip photos and other object lists
+                if key in ('photos', 'user', 'brand', 'photo'):
+                    continue
+
+                if isinstance(val, (str, int, float, bool, type(None))):
+                    raw_data[key] = val
+                elif isinstance(val, dict) and len(val) < 10:  # Small dicts only
+                    try:
+                        # Try to include if it has simple values
+                        raw_data[key] = {k: str(v) for k, v in val.items()}
+                    except:
+                        pass
+
         return ItemRecord(
             external_id=str(d.get("id", "")),
             source=self.source,
@@ -163,10 +194,10 @@ class VintedCollector(BaseCollector):
             size=d.get("size_title"),
             condition=condition,
             price=price,
-            currency=d.get("currency") or "GBP",
+            currency=d.get("currency") or "EUR",
             image_url=image_url,
             listing_url=d.get("url") or d.get("listing_url") or "",
             catalog_id=d.get("catalog_id"),
             color1=d.get("color1"),
-            raw_data=d if isinstance(d, dict) else {},
+            raw_data=raw_data,
         )
