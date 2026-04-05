@@ -1,0 +1,170 @@
+<mxfile host="65bd71144e">
+    <diagram name="Fashion Twin Architecture" id="fashion-twin-arch">
+        <mxGraphModel dx="1668" dy="1220" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="Fashion Twin - AI-Powered Deal Hunter &amp; Recommendation Engine" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="240" y="40" width="700" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="sources-label" value="Data Sources" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="150" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="vinted" value="Vinted.co.uk&lt;br&gt;(vinted-scraper)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="vestiaire" value="Vestiaire Collective&lt;br&gt;(Playwright)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="377" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="depop" value="Depop&lt;br&gt;(Playwright)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="633" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="trends" value="Trend Sources&lt;br&gt;(Vogue, Lyst)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+                    <mxGeometry x="890" y="200" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="collector-label" value="Collection &amp; Embedding Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f0a30a;strokeColor=#BD7000;fontSize=14;fontStyle=1;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="310" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="collector" value="collector/&lt;br&gt;- vinted.py&lt;br&gt;- vestiaire.py&lt;br&gt;- depop.py&lt;br&gt;- trend_scraper.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="360" width="360" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="embedder" value="embedder/&lt;br&gt;FashionCLIP&lt;br&gt;(512d vectors)&lt;br&gt;patrickjohncyh/fashion-clip" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="360" width="300" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge1" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="vinted" edge="1" target="collector">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="310" y="360" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="240" y="330"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge2" style="entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=1;" parent="1" source="vestiaire" target="collector" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="340" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge3" style="entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=1;" parent="1" source="depop" target="collector" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="460" y="300"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge4" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=1;" parent="1" source="trends" target="collector" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="560" y="290"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="storage-label" value="Storage Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;strokeColor=#A50040;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="510" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="postgres" value="PostgreSQL 18&lt;br&gt;(Structured Data)&lt;br&gt;&lt;br&gt;Tables:&lt;br&gt;• items&lt;br&gt;• price_history&lt;br&gt;• deals_found&lt;br&gt;• interactions&lt;br&gt;• behavior_signals&lt;br&gt;• market_averages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="560" width="240" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="qdrant" value="Qdrant&lt;br&gt;(Vector Search)&lt;br&gt;&lt;br&gt;Collection:&lt;br&gt;• fashion_items&lt;br&gt;• 512d embeddings&lt;br&gt;• Similarity search" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="800" y="560" width="220" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="redis" value="Redis&lt;br&gt;(Cache &amp; Sessions)&lt;br&gt;&lt;br&gt;Uses:&lt;br&gt;• Price tracking cache&lt;br&gt;• Rate limiting&lt;br&gt;• Session state" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;align=left;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="505" y="560" width="220" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge5" style="entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=1;" parent="1" source="collector" target="postgres" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge6" style="entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="embedder" target="qdrant" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge7" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=0;" parent="1" source="collector" target="redis" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="processing-label" value="AI Processing Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;strokeColor=#3700CC;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="740" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="deal-hunter" value="deal_hunter/&lt;br&gt;&lt;br&gt;Price Tracker:&lt;br&gt;• Historical tracking&lt;br&gt;• Drop detection&lt;br&gt;&lt;br&gt;Deal Scorer:&lt;br&gt;• Multi-factor (0-100)&lt;br&gt;• Price: 40%&lt;br&gt;• History: 30%&lt;br&gt;• Condition: 20%&lt;br&gt;• Time: 10%&lt;br&gt;• Brand bonuses&lt;br&gt;&lt;br&gt;Alert System:&lt;br&gt;• Discord webhooks&lt;br&gt;• Telegram bot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;fontSize=12;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="90" y="790" width="280" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="llm-client" value="llm/client.py&lt;br&gt;&lt;br&gt;Multi-LLM Support:&lt;br&gt;• Azure OpenAI&lt;br&gt;  - GPT-5.1 (reward)&lt;br&gt;  - GPT-4.1-mini (fast)&lt;br&gt;• OpenRouter (100+)&lt;br&gt;• Databricks (Claude 4.5)&lt;br&gt;• Local (Ollama)&lt;br&gt;&lt;br&gt;Task Routing:&lt;br&gt;• Reward modeling&lt;br&gt;• Fast inference&lt;br&gt;• Reasoning&lt;br&gt;• Deal analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;fontSize=12;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="400" y="790" width="220" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="ranker" value="ranker/&lt;br&gt;&lt;br&gt;Hybrid Ranking:&lt;br&gt;• Collaborative (40%)&lt;br&gt;• Content-based (30%)&lt;br&gt;• Contextual bandit (30%)&lt;br&gt;&lt;br&gt;Components:&lt;br&gt;• LightFM (optional)&lt;br&gt;• FashionCLIP similarity&lt;br&gt;• LinUCB exploration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;fontSize=12;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="647" y="790" width="220" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="rlhf" value="rlhf/&lt;br&gt;&lt;br&gt;Preference Learning:&lt;br&gt;• Behavioral signals&lt;br&gt;  - Dwell time&lt;br&gt;  - Clicks&lt;br&gt;  - Purchases&lt;br&gt;• LLM judgments&lt;br&gt;• Pairwise comparisons&lt;br&gt;• Reward modeling&lt;br&gt;&lt;br&gt;tracker/:&lt;br&gt;• Session tracking&lt;br&gt;• Consent management" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;fontSize=12;spacingLeft=20;" parent="1" vertex="1">
+                    <mxGeometry x="890" y="790" width="220" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="output-label" value="Output &amp; Notifications" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;strokeColor=#005700;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="1089" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="discord" value="Discord Webhook&lt;br&gt;Deal Alerts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="120" y="1139" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="telegram" value="Telegram Bot&lt;br&gt;Deal Alerts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="340" y="1139" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="recommendations" value="Personalized Feed&lt;br&gt;Top-N Items" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf" parent="1" vertex="1">
+                    <mxGeometry x="560" y="1139" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="dashboard" value="Analytics Dashboard&lt;br&gt;(Future)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1" parent="1" vertex="1">
+                    <mxGeometry x="780" y="1139" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="edge8" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="deal-hunter" target="discord" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="220" y="1070" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge9" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=1;" parent="1" source="deal-hunter" target="telegram" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="280" y="1070" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="390" y="1070"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="edge10" style="exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;rounded=0;curved=1;" parent="1" source="ranker" target="recommendations" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="700" y="1060"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="business-label" value="Business Model &amp; Strategy" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a0522d;strokeColor=#6D1F00;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="1239" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="use-case" value="Primary Use Case:&lt;br&gt;Personal Fashion Deal Hunter&lt;br&gt;&lt;br&gt;Target Users:&lt;br&gt;• Fashion enthusiasts&lt;br&gt;• Luxury bargain hunters&lt;br&gt;• Resellers (arbitrage)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#ddae98, #d28f70);strokeColor=#6D1F00;align=left;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="1289" width="240" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="competitive" value="Competitive Advantages:&lt;br&gt;• AI-powered scoring&lt;br&gt;• Multi-marketplace aggregation&lt;br&gt;• Price history tracking&lt;br&gt;• Personalized learning (RLHF)&lt;br&gt;• Real-time alerts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#ddae98, #d28f70);strokeColor=#6D1F00;align=left;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="1289" width="260" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="revenue" value="Revenue Streams:&lt;br&gt;• Affiliate commissions&lt;br&gt;• Premium subscriptions&lt;br&gt;• API access (B2B)&lt;br&gt;• White-label licensing&lt;br&gt;• Data insights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#ddae98, #d28f70);strokeColor=#6D1F00;align=left;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="630" y="1289" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="next-steps" value="Next Steps:&lt;br&gt;• Scrape initial dataset&lt;br&gt;• Test deal hunting (24hr)&lt;br&gt;• Build user profiles&lt;br&gt;• Enable RLHF tracking&lt;br&gt;• A/B test scoring weights" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#ddae98, #d28f70);strokeColor=#6D1F00;align=left;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="900" y="1289" width="220" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="status-label" value="Current System Status (2026-04-04)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontSize=14;fontStyle=1;fontColor=#ffffff;" parent="1" vertex="1">
+                    <mxGeometry x="80" y="1459" width="1040" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="status" value="✅ All 7 system tests passing&lt;br&gt;✅ Database initialized (fashion_twin)&lt;br&gt;✅ Services running (PostgreSQL, Qdrant, Redis)&lt;br&gt;✅ LLM connected (Azure GPT-5.1, GPT-4.1-mini)&lt;br&gt;✅ Deal scorer validated (90/100 test score)&lt;br&gt;&lt;br&gt;Ready for production use!" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9B8C7;strokeColor=#314354;align=left;fontSize=12;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="1509" width="290" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="tech-stack" value="Tech Stack:&lt;br&gt;• Python 3.12&lt;br&gt;• PostgreSQL 18&lt;br&gt;• Qdrant (vectors)&lt;br&gt;• Redis (cache)&lt;br&gt;• FashionCLIP (embeddings)&lt;br&gt;• Azure OpenAI (LLM)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9B8C7;strokeColor=#314354;align=left;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="1509" width="220" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="repo-structure" value="Repository:&lt;br&gt;fashion_twin/&lt;br&gt;├── collector/&lt;br&gt;├── embedder/&lt;br&gt;├── storage/&lt;br&gt;├── llm/&lt;br&gt;├── deal_hunter/&lt;br&gt;├── ranker/&lt;br&gt;├── rlhf/&lt;br&gt;├── tracker/&lt;br&gt;└── scripts/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#A9B8C7;strokeColor=#314354;align=left;fontFamily=Courier New;spacingLeft=20;fontColor=#000000;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="1509" width="200" height="180" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

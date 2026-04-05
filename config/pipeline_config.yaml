@@ -1,0 +1,247 @@
+# Fashion Twin - Data Pipeline Configuration
+#
+# Controls what data gets imported and how the system learns from it.
+# Two modes: Regular (personal shopping) vs Aggressive (mass hunting)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# OPERATING MODE
+# ═══════════════════════════════════════════════════════════════════════════════
+mode: "regular"  # regular | aggressive
+
+# Regular Mode: Personalized shopping assistant
+# - Learns from your favorites, browsing, offers
+# - Builds your style profile
+# - Recommends items matching your taste
+#
+# Aggressive Mode: Mass deal hunting
+# - Continuous marketplace scanning
+# - Multi-category parallel search
+# - Real-time price tracking
+# - Market intelligence gathering
+# - Perfect for resellers/retailers
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# DATA IMPORT PIPELINES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+pipelines:
+
+  # ─── Official Vinted Data ──────────────────────────────────────────────────
+  vinted_favorites:
+    enabled: true
+    description: "Items you favorited"
+    weight: 1.0
+
+  vinted_searches:
+    enabled: true
+    description: "Your search history"
+    weight: 0.8
+
+  vinted_purchases:
+    enabled: true
+    description: "Items you bought"
+    weight: 1.5  # Strongest signal
+
+  vinted_offers:
+    enabled: true
+    description: "Negotiation patterns from chat"
+    weight: 1.2
+
+  vinted_messages:
+    enabled: true
+    description: "Chat messages and questions"
+    weight: 0.9
+
+  vinted_cart:
+    enabled: true
+    description: "Cart additions (not purchased)"
+    weight: 0.6
+
+  # ─── GDPR Export (Most Complete Official Data) ────────────────────────────
+  gdpr_export:
+    enabled: true
+    description: "Full data export from Vinted"
+    weight: 1.5
+    sources:
+      - favorites
+      - purchases
+      - messages
+      - browsing_history
+      - offers
+      - listings
+      - analytics
+
+  # ─── Browser Data (Automatic Extraction) ──────────────────────────────────
+  browser_cookies:
+    enabled: true
+    description: "Session cookies via HackBrowserData"
+    weight: 0.5
+    browsers: ["chrome", "firefox", "edge"]
+
+  browser_history:
+    enabled: true
+    description: "Browsing patterns and frequency"
+    weight: 0.6
+    max_items: 1000
+
+  browser_downloads:
+    enabled: false
+    description: "Downloaded images (optional)"
+    weight: 0.3
+
+  # ─── Behavioral Signals ────────────────────────────────────────────────────
+  dwell_time:
+    enabled: true
+    description: "Time spent viewing items"
+    weight: 0.8
+    min_seconds: 3  # Only count if viewed 3+ seconds
+
+  scroll_depth:
+    enabled: true
+    description: "How far you scrolled on pages"
+    weight: 0.5
+
+  image_zoom:
+    enabled: true
+    description: "Zoomed product photos"
+    weight: 0.7
+
+  frequency:
+    enabled: true
+    description: "How often you return to items"
+    weight: 0.9
+
+  # ─── Product Enrichment ────────────────────────────────────────────────────
+  google_lens:
+    enabled: true
+    description: "Visual search for product details"
+    weight: 1.0
+    auto_enrich: false  # Manual trigger by default
+    batch_size: 50
+    parallel_workers: 5
+
+  # ─── Market Intelligence (Auto-enabled in Aggressive Mode) ────────────────
+  price_tracking:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Historical price data"
+    weight: 2.0
+    check_interval_hours: 6
+
+  price_drops:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Price drop alerts"
+    weight: 1.8
+    min_drop_percentage: 15
+    min_drop_amount: 10
+
+  market_averages:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Category/brand price benchmarks"
+    weight: 1.5
+    update_frequency_days: 1
+
+  competitor_analysis:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Other sellers' pricing strategies"
+    weight: 1.5
+
+  deal_hunting:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Automated deal discovery"
+    weight: 2.5
+    scan_interval_minutes: 30
+    min_deal_score: 70
+
+  sold_items:
+    enabled: false  # Auto-enabled when mode=aggressive
+    description: "Market demand analysis"
+    weight: 1.3
+
+  # ─── Social Signals ─────────────────────────────────────────────────────────
+  vinted_followers:
+    enabled: false
+    description: "Sellers/buyers you follow"
+    weight: 0.4
+
+  vinted_trending:
+    enabled: true
+    description: "Trending items on Vinted"
+    weight: 0.6
+
+  # ─── External Trend Sources ────────────────────────────────────────────────
+  fashion_trends:
+    enabled: true
+    description: "Vogue, Lyst, Pinterest trends"
+    weight: 0.7
+    sources: ["vogue", "lyst", "pinterest"]
+
+  seasonal_trends:
+    enabled: true
+    description: "Current season trends"
+    weight: 0.5
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MODE-SPECIFIC SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+regular_mode:
+  # Focus on learning user preferences
+  focus: "personalization"
+  rlhf_enabled: true
+  behavioral_tracking: true
+  style_profile_evolution: true
+
+  # Conservative scraping
+  scrape_delay_min: 2.0
+  scrape_delay_max: 5.0
+  max_concurrent_requests: 3
+
+aggressive_mode:
+  # Focus on deal discovery and market intelligence
+  focus: "deal_hunting"
+  continuous_scanning: true
+  parallel_searches: true
+
+  # Aggressive scraping
+  scrape_delay_min: 0.5
+  scrape_delay_max: 2.0
+  max_concurrent_requests: 10
+
+  # Deal criteria
+  min_deal_score: 70
+  max_price: 200
+  categories: ["jackets", "dresses", "bags", "shoes", "accessories"]
+  priority_brands: ["chanel", "gucci", "prada", "hermes", "celine", "dior"]
+
+  # Alerts
+  alert_channels: ["discord", "telegram", "email"]
+  alert_min_score: 80
+
+  # Market analysis
+  track_all_prices: true
+  analyze_competitors: true
+  calculate_profit_margins: true
+  target_margin_percentage: 30
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# GLOBAL SETTINGS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+global:
+  # Data retention
+  max_items_in_db: 50000
+  cleanup_old_items_days: 90
+
+  # Privacy
+  gdpr_compliant: true
+  consent_required: true
+  anonymize_after_days: 365
+
+  # Performance
+  batch_size: 100
+  cache_ttl_hours: 24
+
+  # Logging
+  log_level: "INFO"
+  log_pipelines: true
+  log_weights: true
