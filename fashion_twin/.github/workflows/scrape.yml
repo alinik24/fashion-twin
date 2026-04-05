@@ -1,0 +1,50 @@
+name: Scheduled Scrape
+
+on:
+  schedule:
+    # Run daily at 08:00 UTC — adjust to your timezone
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+    inputs:
+      query:
+        description: "Search query"
+        default: "silk blouse"
+      source:
+        description: "Marketplace"
+        default: "vinted"
+      pages:
+        description: "Pages to scrape"
+        default: "5"
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          # FashionCLIP requires torch — use CPU-only for CI
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install Playwright browsers
+        run: playwright install chromium
+
+      - name: Ingest items
+        env:
+          POSTGRES_DSN: ${{ secrets.POSTGRES_DSN }}
+          QDRANT_URL: ${{ secrets.QDRANT_URL }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+          VINTED_SESSION_COOKIE: ${{ secrets.VINTED_SESSION_COOKIE }}
+        run: |
+          python scripts/ingest_items.py \
+            --query "${{ github.event.inputs.query || 'silk blouse' }}" \
+            --source "${{ github.event.inputs.source || 'vinted' }}" \
+            --pages "${{ github.event.inputs.pages || '5' }}"
