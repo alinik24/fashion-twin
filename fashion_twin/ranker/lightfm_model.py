@@ -16,8 +16,12 @@ from typing import Optional
 
 import numpy as np
 import scipy.sparse as sp
-from lightfm import LightFM
-from lightfm.data import Dataset
+try:
+    from lightfm import LightFM
+    from lightfm.data import Dataset
+except ImportError:  # optional ML extra; metadata helpers remain usable without LightFM
+    LightFM = None
+    Dataset = None
 
 from config import get_settings
 
@@ -58,6 +62,8 @@ class FashionRanker:
             interactions: list of dicts with keys item_id, interaction_type, total_strength
             item_features: optional list of dicts with item_id + feature tags
         """
+        if Dataset is None:
+            raise RuntimeError("LightFM is required for training; install the optional ML dependencies")
         self._dataset = Dataset()
 
         db_item_ids = list({r["item_id"] for r in interactions})
@@ -126,7 +132,9 @@ class FashionRanker:
     ) -> None:
         """Fit the LightFM model."""
         cfg = self._cfg
-        self._model = LightFM(loss="warp", no_components=128, learning_rate=0.05)
+        if LightFM is None:
+            raise RuntimeError("LightFM is required for training; install the optional ML dependencies")
+        self._model = LightFM(loss="warp", no_components=128, learning_rate=0.05
         self._model.fit(
             interactions=interactions_mat,
             sample_weight=weights_mat,
