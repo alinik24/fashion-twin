@@ -10,3 +10,4 @@ psycopg2-binary>=2.9
 qdrant-client>=1.7
 redis>=5.0
 vinted-scraper>=2.2
+playwright>=1.40
