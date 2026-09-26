@@ -11,3 +11,6 @@ qdrant-client>=1.7
 redis>=5.0
 vinted-scraper>=2.2
 playwright>=1.40
+lightfm>=1.17
+fashion-clip>=0.0.2
+transformers>=4.35
